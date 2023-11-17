@@ -59,12 +59,12 @@
             $('#submissionForm').submit(function(event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
-
+    
                 $('#formContent').hide();
                 $('#loadingMessage').show();
                 changeTip();
                 var tipInterval = setInterval(changeTip, 10000);
-
+    
                 $.ajax({
                     type: 'POST',
                     url: 'https://hook.eu1.make.com/3s66ds8y7y3dx19de81tx705wf3rh33s',
@@ -72,22 +72,24 @@
                     success: function(response) {
                         clearInterval(tipInterval);
                         $('#responseContent').html(response).removeClass('hidden');
+                        $('#loadingMessage').addClass('hidden');
+                        $('.container').removeClass('max-w-lg'); // Remove max-w-lg when displaying the report
                     },
                     error: function() {
                         clearInterval(tipInterval);
                         $('#responseContent').html('An error occurred.').removeClass('hidden');
-                    },
-                    complete: function() {
                         $('#loadingMessage').addClass('hidden');
+                        $('.container').removeClass('max-w-lg'); // Remove max-w-lg in case of error as well
                     }
                 });
             });
+
         });
     </script>
 </head>
 <body class="bg-gray-100">
     <div class="flex items-center justify-center h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg mx-4">
+        <div class="container bg-white p-8 rounded-lg shadow-md w-full mx-4">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Submission Form</h2>
 
         <div id="formContent">
