@@ -70,16 +70,16 @@
                     url: 'https://hook.eu1.make.com/3s66ds8y7y3dx19de81tx705wf3rh33s',
                     data: formData,
                     success: function(response) {
-                        clearInterval(tipInterval);
                         $('#responseContent').html(response).removeClass('hidden');
-                        $('#loadingMessage').addClass('hidden');
-                        $('.container').removeClass('max-w-lg'); // Remove max-w-lg when displaying the report
                     },
                     error: function() {
-                        clearInterval(tipInterval);
                         $('#responseContent').html('An error occurred.').removeClass('hidden');
-                        $('#loadingMessage').addClass('hidden');
-                        $('.container').removeClass('max-w-lg'); // Remove max-w-lg in case of error as well
+                    },
+                    complete: function() {
+                        clearInterval(tipInterval);
+                        $('.container').removeClass('max-w-lg'); // Remove max-w-lg when displaying the report
+                        $('#loadingMessage').addClass('hidden'); // Hide the loading message and tip when request is complete
+                        $('#accessibilityTip').addClass('hidden'); // Hide the loading message and tip when request is complete
                     }
                 });
             });
@@ -111,7 +111,7 @@
         </div>
 
         <div id="loadingMessage" class="hidden text-center">
-            <p class="text-sm text-gray-500 mb-20">Please wait<span class="dot">...</span></p>
+            <p class="text-sm text-gray-500 mb-20" id="loadingMessage>Please wait<span class="dot">...</span></p>
             <p id="accessibilityTip" class="text-sm text-gray-500"></p>
         </div>
 
