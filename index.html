@@ -3,30 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive AJAX Form</title>
+    <title>Responsive AJAX Form with Accessibility Tips</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
+            var accessibilityTips = [
+                "Tip: Use semantic HTML to improve structure and readability.",
+                "Tip: Ensure text contrast ratios meet accessibility standards.",
+                "Tip: Add alt text to images for screen reader users.",
+                "Tip: Make sure your website is keyboard navigable.",
+                "Tip: Use ARIA roles to enhance HTML elements.",
+                "Tip: Design forms with clear, descriptive labels.",
+                "Tip: Avoid using color alone to convey information.",
+                "Tip: Implement focus indicators for interactive elements.",
+                "Tip: Test your website with screen readers regularly.",
+                "Tip: Provide captions and transcripts for multimedia content."
+            ];
+            var tipIndex = 0;
+
+            function changeTip() {
+                $('#accessibilityTip').text(accessibilityTips[tipIndex]);
+                tipIndex = (tipIndex + 1) % accessibilityTips.length;
+            }
+
             $('#submissionForm').submit(function(event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
-    
+
                 $('#formContent').hide();
                 $('#loadingMessage').show();
-                changeMessage();
-                var messageInterval = setInterval(changeMessage, 10000);
-    
+                changeTip();
+                var tipInterval = setInterval(changeTip, 10000);
+
                 $.ajax({
                     type: 'POST',
                     url: 'https://hook.eu1.make.com/3s66ds8y7y3dx19de81tx705wf3rh33s',
                     data: formData,
                     success: function(response) {
-                        clearInterval(messageInterval);
-                        $('#responseContent').html(response).removeClass('hidden'); // Displaying the response body
+                        clearInterval(tipInterval);
+                        $('#responseContent').html(response).removeClass('hidden');
                     },
                     error: function() {
-                        clearInterval(messageInterval);
+                        clearInterval(tipInterval);
                         $('#responseContent').html('An error occurred.').removeClass('hidden');
                     },
                     complete: function() {
@@ -34,7 +53,6 @@
                     }
                 });
             });
-
         });
     </script>
 </head>
@@ -60,8 +78,8 @@
             </form>
         </div>
 
-        <div id="loadingMessage" class="hidden">
-            <p class="text-center text-sm text-gray-500">Please wait...</p>
+        <div id="loadingMessage" class="hidden text-center">
+            <p id="accessibilityTip" class="text-sm text-gray-500"></p>
         </div>
 
         <div id="responseContent" class="hidden mt-4"></div>
