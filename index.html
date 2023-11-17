@@ -1,19 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Simple Submission Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive AJAX Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#submissionForm').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+
+                $('#formContent').hide();
+                $('#loadingMessage').show();
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://hook.eu1.make.com/3s66ds8y7y3dx19de81tx705wf3rh33s',
+                    data: formData,
+                    success: function(response) {
+                        $('#responseContent').html(response).removeClass('hidden');
+                        $('#loadingMessage').addClass('hidden');
+                    },
+                    error: function() {
+                        $('#responseContent').html('An error occurred.').removeClass('hidden');
+                        $('#loadingMessage').addClass('hidden');
+                    }
+                });
+            });
+        });
+    </script>
 </head>
-<body>
-    <h2>Submission Form</h2>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Submission Form</h2>
 
-    <form action="YOUR_MAKE.COM_ENDPOINT_URL" method="post">
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
+        <div id="formContent">
+            <form id="submissionForm" class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+                    <input type="email" id="email" name="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
 
-        <label for="webAddress">Web Address:</label><br>
-        <input type="url" id="webAddress" name="webAddress" required><br>
+                <div>
+                    <label for="webAddress" class="block text-sm font-medium text-gray-700">Web Address:</label>
+                    <input type="url" id="webAddress" name="webAddress" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
 
-        <input type="submit" value="Submit">
-    </form>
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Submit
+                </button>
+            </form>
+        </div>
+
+        <div id="loadingMessage" class="hidden">
+            <p class="text-center text-sm text-gray-500">Please wait...</p>
+        </div>
+
+        <div id="responseContent" class="hidden mt-4"></div>
+    </div>
 </body>
 </html>
