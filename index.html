@@ -11,24 +11,30 @@
             $('#submissionForm').submit(function(event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
-
+    
                 $('#formContent').hide();
                 $('#loadingMessage').show();
-
+                changeMessage();
+                var messageInterval = setInterval(changeMessage, 10000);
+    
                 $.ajax({
                     type: 'POST',
                     url: 'https://hook.eu1.make.com/3s66ds8y7y3dx19de81tx705wf3rh33s',
                     data: formData,
                     success: function(response) {
-                        $('#responseContent').html(response).removeClass('hidden');
-                        $('#loadingMessage').addClass('hidden');
+                        clearInterval(messageInterval);
+                        $('#responseContent').html(response).removeClass('hidden'); // Displaying the response body
                     },
                     error: function() {
+                        clearInterval(messageInterval);
                         $('#responseContent').html('An error occurred.').removeClass('hidden');
+                    },
+                    complete: function() {
                         $('#loadingMessage').addClass('hidden');
                     }
                 });
             });
+
         });
     </script>
 </head>
